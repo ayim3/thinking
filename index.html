@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Para Laurinha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose-100: #ffe4e9;
+            --rose-200: #ffc9d4;
+            --rose-300: #ffaec2;
+            --rose-400: #ff8fab;
+            --rose-500: #f4a7bb;
+            --rose-600: #e8b4b8;
+            --rose-700: #d4a4a8;
+            --rose-800: #c49498;
+            --neutral-50: #fefdfb;
+            --neutral-100: #f8f6f4;
+            --neutral-200: #f0ede8;
+            --neutral-300: #e8ddd0;
+            --neutral-700: #5a4a6a;
+            --neutral-800: #3a2a3a;
+            --neutral-900: #2c2c2e;
+            --shadow-color: 232deg 25% 70%;
+            --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.08);
+            --shadow-md: 0 2px 8px hsl(var(--shadow-color) / 0.12);
+            --shadow-lg: 0 8px 24px hsl(var(--shadow-color) / 0.16);
+            --shadow-xl: 0 16px 48px hsl(var(--shadow-color) / 0.20);
+            --blur-glass: blur(24px) saturate(180%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) rotate(-1deg) scale(1);
+            }
+            50% { 
+                transform: translateY(-16px) rotate(1deg) scale(1.01);
+            }
+        }
+
+        @keyframes floatReverse {
+            0%, 100% { 
+                transform: translateY(0) rotate(1deg);
+            }
+            50% { 
+                transform: translateY(-12px) rotate(-1deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-60px) scale(0.96);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes particleRise {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), -160px) scale(1.3) rotate(var(--rotate));
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background: linear-gradient(135deg, 
+                #fdfbf8 0%, 
+                #f8f4f0 15%,
+                #fef0ed 30%,
+                #f5ebe8 45%,
+                #fce8e5 60%,
+                #f8e4e0 75%,
+                #f5e0db 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientFlow 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient particles background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(255, 174, 194, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(232, 180, 184, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(244, 196, 200, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 25% 70%, rgba(255, 142, 171, 0.06) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating orbs */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 174, 194, 0.03) 2%, transparent 2%),
+                radial-gradient(circle at 60% 70%, rgba(232, 180, 184, 0.03) 1.5%, transparent 1.5%),
+                radial-gradient(circle at 80% 20%, rgba(244, 196, 200, 0.03) 2.5%, transparent 2.5%);
+            background-size: 100px 100px, 150px 150px, 120px 120px;
+            animation: floatReverse 40s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ENVELOPE */
+        .envelope-wrapper {
+            perspective: 1500px;
+            animation: fadeInUp 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            cursor: pointer;
+            animation: float 6s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 20px 40px rgba(232, 180, 184, 0.25));
+        }
+
+        .envelope:hover {
+            transform: translateY(-8px) scale(1.02);
+            filter: drop-shadow(0 28px 56px rgba(232, 180, 184, 0.35));
+        }
+
+        .envelope-body {
+            background: linear-gradient(135deg, 
+                rgba(244, 167, 187, 0.98) 0%, 
+                rgba(232, 180, 184, 0.98) 50%,
+                rgba(212, 164, 168, 0.98) 100%
+            );
+            backdrop-filter: var(--blur-glass);
+            -webkit-backdrop-filter: var(--blur-glass);
+            padding: 75px 55px;
+            border-radius: 16px;
+            box-shadow: 
+                var(--shadow-xl),
+                0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+                0 0 60px rgba(232, 180, 184, 0.3);
+            text-align: center;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+
+        /* Shimmer effect */
+        .envelope-body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        /* Decorative corners */
+        .envelope-body::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(135deg, 
+                rgba(255, 140, 198, 0.98) 0%, 
+                rgba(244, 167, 187, 0.98) 50%,
+                rgba(232, 180, 184, 0.98) 100%
+            );
+            backdrop-filter: var(--blur-glass);
+            -webkit-backdrop-filter: var(--blur-glass);
+            clip-path: polygon(0 0, 50% 70%, 100% 0);
+            transform-origin: top center;
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .envelope:hover .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope.opened .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope-content {
+            color: var(--neutral-50);
+            position: relative;
+            z-index: 1;
+        }
+
+        .envelope-to {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-shadow: 
+                0 2px 12px rgba(0, 0, 0, 0.2),
+                0 4px 24px rgba(232, 180, 184, 0.4);
+            letter-spacing: 1px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .envelope-subtitle {
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 0.94;
+            letter-spacing: 1px;
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.05rem;
+            color: var(--neutral-700);
+            font-style: italic;
+            animation: float 3.5s ease-in-out infinite;
+            white-space: nowrap;
+            opacity: 0.75;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* LETTER */
+        .letter-wrapper {
+            display: none;
+            animation: slideDown 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .letter-wrapper.show {
+            display: block;
+        }
+
+        .letter {
+            background: var(--neutral-50);
+            padding: 65px 60px;
+            border-radius: 6px;
+            box-shadow: 
+                var(--shadow-sm),
+                var(--shadow-lg),
+                0 0 0 1px var(--neutral-200),
+                0 0 80px rgba(232, 180, 184, 0.15);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--neutral-200);
+        }
+
+        /* Enhanced ruled lines */
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 60px;
+            right: 60px;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 35px,
+                rgba(232, 180, 184, 0.12) 35px,
+                rgba(232, 180, 184, 0.12) 36px
+            );
+            pointer-events: none;
+        }
+
+        /* Decorative margin line */
+        .letter::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 95px;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(244, 167, 187, 0.25) 8%,
+                rgba(244, 167, 187, 0.25) 92%,
+                transparent
+            );
+            box-shadow: 0 0 8px rgba(244, 167, 187, 0.2);
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+            font-size: 1.4rem;
+            line-height: 2.3;
+            color: var(--neutral-900);
+            letter-spacing: 0.4px;
+        }
+
+        .letter-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            margin-bottom: 38px;
+            color: var(--neutral-700);
+            letter-spacing: 0.8px;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Decorative underline */
+        .letter-greeting::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                var(--rose-400),
+                var(--rose-300),
+                transparent
+            );
+            opacity: 0.4;
+        }
+
+        .letter-paragraph {
+            margin-bottom: 34px;
+            text-align: justify;
+            text-indent: 52px;
+            hyphens: auto;
+            position: relative;
+        }
+
+        .letter-paragraph:first-of-type {
+            text-indent: 0;
+        }
+
+        /* Drop cap for first paragraph */
+        .letter-paragraph:first-of-type::first-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            float: left;
+            line-height: 0.8;
+            margin: 8px 12px 0 0;
+            color: var(--rose-500);
+            text-shadow: 2px 2px 8px rgba(244, 167, 187, 0.3);
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 60px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 400;
+            color: var(--rose-600);
+            font-style: italic;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            float: right;
+        }
+
+        /* Decorative flourish */
+        .letter-signature::before {
+            content: '~';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            opacity: 0.4;
+        }
+
+        /* PARTICLES */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 1.3rem;
+            animation: particleRise 3s ease-out forwards;
+        }
+
+        /* SCROLLBAR */
+        .letter::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                180deg,
+                var(--rose-400),
+                var(--rose-500)
+            );
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .letter::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(
+                180deg,
+                var(--rose-500),
+                var(--rose-600)
+            );
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .envelope-body {
+                padding: 65px 45px;
+            }
+
+            .envelope-to {
+                font-size: 2.8rem;
+            }
+
+            .envelope-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .letter {
+                padding: 55px 45px;
+                max-height: 75vh;
+            }
+
+            .letter::before {
+                left: 45px;
+                right: 45px;
+            }
+
+            .letter::after {
+                left: 75px;
+            }
+
+            .letter-content {
+                font-size: 1.3rem;
+                line-height: 2.1;
+            }
+
+            .letter-greeting {
+                font-size: 2.1rem;
+            }
+
+            .letter-paragraph {
+                text-indent: 42px;
+            }
+
+            .letter-paragraph:first-of-type::first-letter {
+                font-size: 4rem;
+            }
+
+            .letter-signature {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter {
+                padding: 45px 35px;
+            }
+
+            .letter::before {
+                left: 35px;
+                right: 35px;
+            }
+
+            .letter::after {
+                left: 65px;
+            }
+
+            .letter-content {
+                font-size: 1.25rem;
+                line-height: 2;
+            }
+
+            .letter-paragraph {
+                text-indent: 36px;
+            }
+
+            .letter-paragraph:first-of-type::first-letter {
+                font-size: 3.5rem;
+            }
+        }
+
+        .envelope {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .envelope:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- ENVELOPE -->
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-content">
+                        <div class="envelope-to">Para Laurinha</div>
+                    </div>
+                </div>
+                <div class="tap-hint">toque para abrir</div>
+            </div>
+        </div>
+
+        <!-- LETTER -->
+        <div class="letter-wrapper" id="letterWrapper">
+            <div class="letter">
+                <div class="letter-content">
+                    <div class="letter-greeting">oi, laurinha.</div>
+                    
+                    <div class="letter-paragraph">
+                        eu pensei bastante antes de escrever. nao por duvida. por cuidado. na verdade, eu nao estava conseguindo dormir. e quando isso acontece, eu procuro algo pra fazer. programar e tentar dar forma concreta ao que sinto me ajuda a organizar a cabeca. foi assim que essa mensagem nasceu.
+                    </div>
+
+                    <div class="letter-paragraph">
+                        voce eh importante pra mim. de verdade. pensar em voce deixa meus dias mais leves. seu sorriso muda meu humor. sua presenca faz bem.
+                    </div>
+
+                    <div class="letter-paragraph">
+                        quero deixar algo claro. eu respeito seu espaco. seu tempo importa. sua vida eh sua. se em algum momento voce precisar de silencio ou distancia, pode me falar. sem culpa. eu vou entender.
+                    </div>
+
+                    <div class="letter-paragraph">
+                        tambem quero ser honesto sobre mim. tenho medo de parecer cobranca sem perceber. entao, se voce estiver sentindo que eu estou cobrando ou colocando qualquer peso, me conta. eu quero corrigir isso e manter tudo leve.
+                    </div>
+
+                    <div class="letter-paragraph">
+                        o que eu quero eh simples. estar por perto do jeito que fizer sentido
