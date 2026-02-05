@@ -96,35 +96,15 @@
         @keyframes heartFloat {
             0% {
                 opacity: 0;
-                transform: translateY(0) scale(0);
+                transform: translateY(0) scale(0.5) rotate(0deg);
             }
-            20% {
+            10% {
                 opacity: 1;
                 transform: translateY(-20px) scale(1);
             }
             100% {
                 opacity: 0;
-                transform: translateY(-200px) scale(1.5) rotate(15deg);
-            }
-        }
-
-        @keyframes confettiFall {
-            0% {
-                opacity: 1;
-                transform: translateY(-100px) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(255, 174, 194, 0.6);
-            }
-            50% {
-                box-shadow: 0 0 25px rgba(255, 174, 194, 1);
+                transform: translateY(-150px) scale(1.2) rotate(10deg);
             }
         }
 
@@ -539,13 +519,6 @@
             animation: heartFloat 2s ease-out forwards;
         }
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            animation: confettiFall 3s ease-out forwards;
-        }
-
         /* SCROLLBAR */
         .letter::-webkit-scrollbar {
             width: 8px;
@@ -680,7 +653,7 @@
                     <div class="letter-greeting">oi, laurinha.</div>
                     
                     <div class="letter-paragraph">
-                        <span class="typewriter" data-text="eu pensei bastante antes de escrever. nao por duvida. "></span><span class="highlight typewriter" data-text="por cuidado"></span><span class="typewriter" data-text=". na verdade, eu nao estava conseguindo dormir. e quando isso acontece, eu procuro algo pra fazer. programar e tentar dar forma concreta ao que sinto me ajuda a organizar a cabeca. foi assim que essa mensagem nasceu."></span>
+                        <span class="typewriter" data-text="eu nao estava conseguindo dormir. fiquei pensando um pouco. ai pensei, por que nao fazer algo e contar algumas coisinhas? sentei, comecei a programar. fazer algo assim me faz bem de verdade. eh so porque eu me sinto bem criando alguma coisa. foi assim que isso apareceu."></span>
                     </div>
 
                     <div class="letter-paragraph">
@@ -688,287 +661,11 @@
                     </div>
 
                     <div class="letter-paragraph">
-                        <span class="typewriter" data-text="quero deixar algo claro. "></span><span class="highlight typewriter" data-text="eu respeito seu espaco"></span><span class="typewriter" data-text=". seu tempo importa. sua vida eh sua. se em algum momento voce precisar de silencio ou distancia, pode me falar. sem culpa. eu vou entender."></span>
+                        <span class="typewriter" data-text="eu sei que nem tudo da pra ser 100 por cento o tempo todo. relacoes, sentimentos, momentos. mesmo assim, o que eu quero eh simples. "></span><span class="highlight typewriter" data-text="fazer disso algo bom. leve. sincero"></span><span class="typewriter" data-text="."></span>
                     </div>
 
                     <div class="letter-paragraph">
-                        <span class="typewriter" data-text="tambem quero ser honesto sobre mim. tenho medo de parecer cobranca sem perceber. entao, "></span><span class="highlight typewriter" data-text="se voce estiver sentindo que eu estou cobrando ou colocando qualquer peso, me conta"></span><span class="typewriter" data-text=". eu quero corrigir isso e manter tudo leve."></span>
+                        <span class="typewriter" data-text="quero deixar algo claro. "></span><span class="highlight typewriter" data-text="eu respeito seu espaco"></span><span class="typewriter" data-text=". seu tempo importa. quando quiser um momentinho so seu, eu sei que devo saber quando. mas se eu nao conseguir perceber, voce pode falar. sem culpa. eu vou entender."></span>
                     </div>
 
-                    <div class="letter-paragraph">
-                        <span class="typewriter" data-text="o que eu quero eh simples. estar por perto do jeito que fizer sentido. dividir risadas. conversas sem pressa. silencios tranquilos. "></span><span class="highlight typewriter" data-text="ver voce bem ja eh muito pra mim"></span><span class="typewriter" data-text="."></span>
-                    </div>
-
-                    <div class="letter-paragraph">
-                        <span class="typewriter" data-text="nao existe cobranca aqui. nao existe pressao. "></span><span class="highlight typewriter" data-text="sua felicidade vem primeiro"></span><span class="typewriter" data-text=". se eu puder fazer parte disso, fico feliz. se nao, ainda assim torco por voce."></span>
-                    </div>
-
-                    <div class="letter-paragraph">
-                        <span class="typewriter" data-text="faco isso de alma e com cuidado, nao quero parecer sla..."></span>
-                    </div>
-
-                    <div class="letter-signature">
-                        <span class="typewriter" data-text="beijinho <3"></span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="interaction-hint">toque duas vezes para corações ❤️</div>
-        </div>
-    </div>
-
-    <button class="music-button" id="musicButton" onclick="toggleMusic()">
-        <svg id="musicIcon" viewBox="0 0 24 24">
-            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-        </svg>
-    </button>
-
-    <button class="reread-button" id="rereadButton" onclick="relerCarta()">
-        ❤️ reler
-    </button>
-
-    <audio id="backgroundMusic" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3" type="audio/mpeg">
-    </audio>
-
-    <script>
-        let lastTap = 0;
-        let isTyping = false;
-        let musicPlaying = false;
-
-        // SHAKE DETECTION
-        let lastX, lastY, lastZ;
-        let shakeThreshold = 15;
-
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', function(e) {
-                let acceleration = e.accelerationIncludingGravity;
-                
-                if (lastX !== undefined) {
-                    let deltaX = Math.abs(acceleration.x - lastX);
-                    let deltaY = Math.abs(acceleration.y - lastY);
-                    let deltaZ = Math.abs(acceleration.z - lastZ);
-                    
-                    if (deltaX + deltaY + deltaZ > shakeThreshold) {
-                        criarConfetes();
-                    }
-                }
-                
-                lastX = acceleration.x;
-                lastY = acceleration.y;
-                lastZ = acceleration.z;
-            });
-        }
-
-        function abrirCarta() {
-            var envelope = document.getElementById('envelope');
-            var envelopeWrapper = document.getElementById('envelopeWrapper');
-            var letterWrapper = document.getElementById('letterWrapper');
-            
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-            
-            envelope.classList.add('opened');
-            criarParticulas();
-            
-            setTimeout(function() {
-                envelopeWrapper.style.display = 'none';
-                letterWrapper.style.display = 'block';
-                window.scrollTo(0, 0);
-                
-                setTimeout(function() {
-                    iniciarTypewriter();
-                    document.getElementById('musicButton').classList.add('show');
-                    document.getElementById('rereadButton').classList.add('show');
-                }, 300);
-            }, 1300);
-        }
-
-        function iniciarTypewriter() {
-            if (isTyping) return;
-            isTyping = true;
-            
-            const elements = document.querySelectorAll('.typewriter');
-            let delay = 0;
-            
-            elements.forEach((element, index) => {
-                const text = element.getAttribute('data-text');
-                element.textContent = '';
-                
-                setTimeout(() => {
-                    typeText(element, text, 30);
-                }, delay);
-                
-                delay += text.length * 30 + 200;
-            });
-        }
-
-        function typeText(element, text, speed) {
-            let i = 0;
-            const interval = setInterval(() => {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(interval);
-                }
-            }, speed);
-        }
-
-        // DOUBLE TAP FOR HEARTS
-        document.getElementById('letter').addEventListener('touchend', function(e) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            
-            if (tapLength < 300 && tapLength > 0) {
-                criarCoracoes(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                if (navigator.vibrate) {
-                    navigator.vibrate(30);
-                }
-            }
-            lastTap = currentTime;
-        });
-
-        // HIGHLIGHT TOUCH
-        document.querySelectorAll('.highlight').forEach(highlight => {
-            highlight.addEventListener('touchstart', function() {
-                if (navigator.vibrate) {
-                    navigator.vibrate(20);
-                }
-            });
-        });
-
-        function criarCoracoes(x, y) {
-            const particles = document.getElementById('particles');
-            const coracao = '❤️';
-            
-            for (let i = 0; i < 5; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.textContent = coracao;
-                heart.style.left = x + 'px';
-                heart.style.top = y + 'px';
-                heart.style.animationDelay = (i * 0.1) + 's';
-                
-                particles.appendChild(heart);
-                
-                setTimeout(() => heart.remove(), 2000);
-            }
-        }
-
-        function criarConfetes() {
-            if (navigator.vibrate) {
-                navigator.vibrate([30, 50, 30]);
-            }
-            
-            const particles = document.getElementById('particles');
-            const colors = ['#ffaec2', '#f4a7bb', '#e8b4b8', '#ff8fab', '#ffc9d4'];
-            
-            for (let i = 0; i < 30; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * window.innerWidth + 'px';
-                confetti.style.top = '-50px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-                
-                particles.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
-
-        function criarParticulas() {
-            var particles = document.getElementById('particles');
-            var simbolos = ['✦', '✧', '◦', '·', '❀', '✿', '※', '⚘'];
-            var cores = [
-                'rgba(255, 174, 194, 0.8)',
-                'rgba(244, 167, 187, 0.7)',
-                'rgba(232, 180, 184, 0.6)',
-                'rgba(255, 142, 171, 0.7)',
-                'rgba(244, 196, 200, 0.6)'
-            ];
-            
-            for (var i = 0; i < 12; i++) {
-                var particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
-                
-                var angle = (Math.PI * 2 * i) / 12;
-                var distance = 80 + Math.random() * 60;
-                var offsetX = Math.cos(angle) * distance;
-                var offsetY = Math.sin(angle) * distance;
-                
-                particle.style.left = (window.innerWidth / 2 + offsetX) + 'px';
-                particle.style.top = (window.innerHeight / 2 + offsetY) + 'px';
-                particle.style.color = cores[Math.floor(Math.random() * cores.length)];
-                particle.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
-                particle.style.setProperty('--rotate', Math.random() * 360 + 'deg');
-                particle.style.animationDelay = (Math.random() * 0.3) + 's';
-                
-                particles.appendChild(particle);
-                
-                setTimeout(function(p) {
-                    return function() { p.remove(); };
-                }(particle), 3000);
-            }
-        }
-
-        function toggleMusic() {
-            const music = document.getElementById('backgroundMusic');
-            const button = document.getElementById('musicButton');
-            
-            if (musicPlaying) {
-                music.pause();
-                button.classList.remove('playing');
-                musicPlaying = false;
-            } else {
-                music.play();
-                button.classList.add('playing');
-                musicPlaying = true;
-            }
-            
-            if (navigator.vibrate) {
-                navigator.vibrate(20);
-            }
-        }
-
-        function relerCarta() {
-            if (navigator.vibrate) {
-                navigator.vibrate(40);
-            }
-            
-            const letterWrapper = document.getElementById('letterWrapper');
-            const envelopeWrapper = document.getElementById('envelopeWrapper');
-            const envelope = document.getElementById('envelope');
-            const music = document.getElementById('backgroundMusic');
-            
-            // Reset music
-            music.pause();
-            music.currentTime = 0;
-            musicPlaying = false;
-            document.getElementById('musicButton').classList.remove('playing', 'show');
-            document.getElementById('rereadButton').classList.remove('show');
-            
-            // Hide letter
-            letterWrapper.style.display = 'none';
-            
-            // Reset envelope
-            envelope.classList.remove('opened');
-            
-            // Reset typewriter
-            isTyping = false;
-            document.querySelectorAll('.typewriter').forEach(el => {
-                el.textContent = el.getAttribute('data-text');
-            });
-            
-            // Show envelope again
-            envelopeWrapper.style.display = 'block';
-            
-            criarParticulas();
-        }
-    </script>
-</body>
-</html>
+                    <div class="letter-paragrap
