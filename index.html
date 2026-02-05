@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Para Laurinha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose-100: #ffe4e9;
+            --rose-200: #ffc9d4;
+            --rose-300: #ffaec2;
+            --rose-400: #ff8fab;
+            --rose-500: #f4a7bb;
+            --rose-600: #e8b4b8;
+            --rose-700: #d4a4a8;
+            --neutral-50: #fefdfb;
+            --neutral-100: #f8f6f4;
+            --neutral-200: #f0ede8;
+            --neutral-300: #e8ddd0;
+            --neutral-700: #5a4a6a;
+            --neutral-900: #2c2c2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) rotate(-1deg);
+            }
+            50% { 
+                transform: translateY(-16px) rotate(1deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes particleRise {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), -160px) scale(1.3) rotate(var(--rotate));
+            }
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) scale(1.2) rotate(10deg);
+            }
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background: linear-gradient(135deg, 
+                #fdfbf8 0%, 
+                #f8f4f0 15%,
+                #fef0ed 30%,
+                #f5ebe8 45%,
+                #fce8e5 60%,
+                #f8e4e0 75%,
+                #f5e0db 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientFlow 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(255, 174, 194, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(232, 180, 184, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(244, 196, 200, 0.08) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ENVELOPE */
+        .envelope-wrapper {
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            cursor: pointer;
+            animation: float 6s ease-in-out infinite;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 20px 40px rgba(232, 180, 184, 0.25));
+        }
+
+        .envelope:hover {
+            transform: translateY(-8px) scale(1.02);
+            filter: drop-shadow(0 28px 56px rgba(232, 180, 184, 0.35));
+        }
+
+        .envelope:active {
+            transform: scale(0.97);
+        }
+
+        .envelope-body {
+            background: linear-gradient(135deg, 
+                rgba(244, 167, 187, 0.98) 0%, 
+                rgba(232, 180, 184, 0.98) 50%,
+                rgba(212, 164, 168, 0.98) 100%
+            );
+            padding: 75px 55px;
+            border-radius: 16px;
+            box-shadow: 
+                0 16px 48px rgba(232, 180, 184, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+                0 0 60px rgba(232, 180, 184, 0.3);
+            text-align: center;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+
+        .envelope-body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        .envelope-body::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(135deg, 
+                rgba(255, 140, 198, 0.98) 0%, 
+                rgba(244, 167, 187, 0.98) 50%,
+                rgba(232, 180, 184, 0.98) 100%
+            );
+            clip-path: polygon(0 0, 50% 70%, 100% 0);
+            transform-origin: top center;
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .envelope:hover .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope.opened .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope-content {
+            color: var(--neutral-50);
+            position: relative;
+            z-index: 1;
+        }
+
+        .envelope-to {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--rose-600);
+            font-style: italic;
+            animation: pulse 2s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        /* LETTER */
+        .letter-wrapper {
+            display: none;
+            animation: fadeInUp 1s ease;
+            position: relative;
+        }
+
+        .letter {
+            background: linear-gradient(
+                to bottom,
+                var(--neutral-50) 0%,
+                var(--neutral-100) 100%
+            );
+            padding: 70px 60px;
+            border-radius: 12px;
+            box-shadow: 
+                0 20px 60px rgba(90, 74, 106, 0.15),
+                0 0 0 1px rgba(232, 180, 184, 0.2) inset;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(232, 180, 184, 0.3);
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            right: 60px;
+            height: 1px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                var(--rose-300),
+                transparent
+            );
+        }
+
+        .letter::after {
+            content: '';
+            position: absolute;
+            top: 45px;
+            left: 90px;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(
+                circle,
+                var(--rose-400),
+                var(--rose-500)
+            );
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(244, 167, 187, 0.4);
+        }
+
+        .letter-content {
+            color: var(--neutral-700);
+            font-size: 1.4rem;
+            line-height: 2.2;
+            letter-spacing: 0.3px;
+        }
+
+        .letter-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--rose-600);
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .letter-paragraph {
+            margin-bottom: 28px;
+            text-align: justify;
+            text-indent: 48px;
+        }
+
+        .letter-paragraph:first-of-type {
+            text-indent: 0;
+        }
+
+        .letter-paragraph:first-of-type::first-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: var(--rose-500);
+            float: left;
+            line-height: 0.85;
+            margin-right: 8px;
+            margin-top: 8px;
+        }
+
+        .highlight {
+            background: linear-gradient(
+                180deg,
+                transparent 60%,
+                rgba(255, 174, 194, 0.3) 60%,
+                rgba(255, 174, 194, 0.3) 95%,
+                transparent 95%
+            );
+            padding: 2px 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .highlight:active {
+            background: linear-gradient(
+                180deg,
+                transparent 60%,
+                rgba(255, 174, 194, 0.6) 60%,
+                rgba(255, 174, 194, 0.6) 95%,
+                transparent 95%
+            );
+            animation: glowPulse 0.5s ease;
+        }
+
+        .letter-signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--rose-600);
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        /* MUSIC BUTTON */
+        .music-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--rose-400), var(--rose-500));
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 24px rgba(244, 167, 187, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .music-button.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .music-button:active {
+            transform: scale(0.9);
+        }
+
+        .music-button.playing {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .music-button svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        /* REREAD BUTTON */
+        .reread-button {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 12px 24px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--rose-400), var(--rose-500));
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 24px rgba(244, 167, 187, 0.4);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0);
+            font-weight: 600;
+        }
+
+        .reread-button.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reread-button:active {
+            transform: scale(0.95);
+        }
+
+        /* HINT TEXT */
+        .interaction-hint {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            color: var(--rose-600);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1s ease 2s forwards, pulse 2s ease-in-out 3s infinite;
+            text-align: center;
+            z-index: 999;
+        }
+
+        /* PARTICLES */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 1.3rem;
+            animation: particleRise 3s ease-out forwards;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: heartFloat 2s ease-out forwards;
+        }
+
+        /* SCROLLBAR */
+        .letter::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                180deg,
+                var(--rose-400),
+                var(--rose-500)
+            );
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .envelope-body {
+                padding: 65px 45px;
+            }
+
+            .envelope-to {
+                font-size: 2.8rem;
+            }
+
+            .letter {
+                padding: 55px 45px;
+                max-height: 75vh;
+            }
+
+            .letter::before {
+                left: 45px;
+                right: 45px;
+            }
+
+            .letter::after {
+                left: 75px;
+            }
+
+            .letter-content {
+                font-size: 1.3rem;
+                line-height: 2.1;
+            }
+
+            .letter-greeting {
+                font-size: 2.1rem;
+            }
+
+            .letter-paragraph {
+                text-indent: 42px;
+            }
+
+            .letter-paragraph:first-of-type::first-letter {
+                font-size: 4rem;
+            }
+
+            .letter-signature {
+                font-size: 2.2rem;
+            }
+
+            .music-button {
+                width: 55px;
+                height: 55px;
+                bottom: 25px;
+                right: 25px;
+            }
+
+            .reread-button {
+                bottom: 25px;
+                left: 25px;
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            .interaction-hint {
+                bottom: 95px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter {
+                padding: 45px 35px;
+            }
+
+            .letter::before {
+                left: 35px;
+                right: 35px;
+            }
+
+            .letter::after {
+                left: 65px;
+            }
+
+            .letter-content {
+                font-size: 1.25rem;
+                line-height: 2;
+            }
+
+            .letter-paragraph {
+                text-indent: 36px;
+            }
+
+            .letter-paragraph:first-of-type::first-letter {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope" onclick="abrirCarta()">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-content">
+                        <div class="envelope-to">Para Laurinha</div>
+                    </div>
+                </div>
+                <div class="tap-hint">toque para abrir</div>
+            </div>
+        </div>
+
+        <div class="letter-wrapper" id="letterWrapper">
+            <div class="letter" id="letter">
+                <div class="letter-content" id="letterContent">
+                    <div class="letter-greeting">oi, laurinha.</div>
+                    
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="eu nao estava conseguindo dormir. fiquei pensando um pouco. ai pensei, por que nao fazer algo e contar algumas coisinhas? sentei, comecei a programar. fazer algo assim me faz bem de verdade. eh assim que isso vai surgir..."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="highlight typewriter" data-text="voce eh importante pra mim"></span><span class="typewriter" data-text=". de verdade. pensar em voce deixa meus dias mais leves. seu sorriso muda meu humor. "></span><span class="highlight typewriter" data-text="sua presenca faz bem"></span><span class="typewriter" data-text="."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="eu sei que nem tudo da pra ser 100 por cento o tempo todo. relacoes, sentimentos, momentos. mesmo assim, o que eu quero eh simples. "></span><span class="highlight typewriter" data-text="fazer disso algo bom. leve. real"></span><span class="typewriter" data-text="."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="saiba princesa, "></span><span class="highlight typewriter" data-text="eu respeito seu espaco"></span><span class="typewriter" data-text=". seu tempo importa. quando quiser um momentinho so seu, talvez eu deva perceber, mas se eu nao conseguir perceber, voce pode falar. eu vou entender."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="tambem quero ser honesto sobre mim. tenho medo de parecer um banao sem perceber. entao, "></span><span class="highlight typewriter" data-text="se voce estiver sentindo que eu estou cobrando ou colocando qualquer peso, me conta"></span><span class="typewriter" data-text=". eu quero poder ajeitar isso e manter tudo leve."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="o que eu quero eh simples. estar por perto do jeito que fizer sentido. dividir risadas. silencios tranquilos. "></span><span class="highlight typewriter" data-text="ver voce bem ja eh muito pra mim"></span><span class="typewriter" data-text="."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="nao existe cobranca aqui. nao existe pressao. "></span><span class="highlight typewriter" data-text="sua felicidade vem primeiro"></span><span class="typewriter" data-text=". se eu puder fazer parte disso, fico feliz."></span>
+                    </div>
+
+                    <div class="letter-paragraph">
+                        <span class="typewriter" data-text="nao sei se vou te mandar isso ou nao, tenho medo de parecer chato... mas eu gosto de fazer essas coisinhas"></span>
+                    </div>
+
+                    <div class="letter-signature">
+                        <span class="typewriter" data-text="beijonhos <3"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="interaction-hint">toque duas vezes para corações ❤️</div>
+        </div>
+    </div>
+
+    <button class="music-button" id="musicButton" onclick="toggleMusic()">
+        <svg id="musicIcon" viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+    </button>
+
+    <button class="reread-button" id="rereadButton" onclick="relerCarta()">
+        ❤️ reler
+    </button>
+
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let lastTap = 0;
+        let isTyping = false;
+        let musicPlaying = false;
+
+        // HAPTIC FEEDBACK FUNCTION
+        function vibrar(intensidade) {
+            // iOS Haptic Engine
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(intensidade);
+            }
+            // Fallback para dispositivos mais antigos
+            if (navigator.vibrate) {
+                navigator.vibrate(intensidade);
+            }
+        }
+
+        function abrirCarta() {
+            var envelope = document.getElementById('envelope');
+            var envelopeWrapper = document.getElementById('envelopeWrapper');
+            var letterWrapper = document.getElementById('letterWrapper');
+            
+            vibrar(50);
+            
+            envelope.classList.add('opened');
+            criarParticulas();
+            
+            setTimeout(function() {
+                envelopeWrapper.style.display = 'none';
+                letterWrapper.style.display = 'block';
+                window.scrollTo(0, 0);
+                
+                setTimeout(function() {
+                    iniciarTypewriter();
+                    document.getElementById('musicButton').classList.add('show');
+                    document.getElementById('rereadButton').classList.add('show');
+                }, 300);
+            }, 1300);
+        }
+
+        function iniciarTypewriter() {
+            if (isTyping) return;
+            isTyping = true;
+            
+            const elements = document.querySelectorAll('.typewriter');
+            let delay = 0;
+            
+            elements.forEach((element, index) => {
+                const text = element.getAttribute('data-text');
+                element.textContent = '';
+                
+                setTimeout(() => {
+                    typeText(element, text, 30);
+                }, delay);
+                
+                delay += text.length * 30 + 200;
+            });
+        }
+
+        function typeText(element, text, speed) {
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+
+        // DOUBLE TAP FOR HEARTS
+        document.getElementById('letter').addEventListener('touchend', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                criarCoracoes(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                vibrar(30);
+            }
+            lastTap = currentTime;
+        });
+
+        // HIGHLIGHT TOUCH
+        document.querySelectorAll('.highlight').forEach(highlight => {
+            highlight.addEventListener('touchstart', function() {
+                vibrar(20);
+            });
+        });
+
+        function criarCoracoes(x, y) {
+            const particles = document.getElementById('particles');
+            const coracao = '❤️';
+            
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = coracao;
+                
+                // Posição inicial com variação
+                const offsetX = (Math.random() - 0.5) * 40;
+                const offsetY = (Math.random() - 0.5) * 20;
+                
+                heart.style.left = (x + offsetX) + 'px';
+                heart.style.top = (y + offsetY) + 'px';
+                heart.style.animationDelay = (i * 0.08) + 's';
+                heart.style.animationDuration = (1.5 + Math.random() * 0.5) + 's';
+                
+                particles.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 2500);
+            }
+        }
+
+        function criarParticulas() {
+            var particles = document.getElementById('particles');
+            var simbolos = ['✦', '✧', '◦', '·', '❀', '✿', '※', '⚘'];
+            var cores = [
+                'rgba(255, 174, 194, 0.8)',
+                'rgba(244, 167, 187, 0.7)',
+                'rgba(232, 180, 184, 0.6)',
+                'rgba(255, 142, 171, 0.7)',
+                'rgba(244, 196, 200, 0.6)'
+            ];
+            
+            for (var i = 0; i < 12; i++) {
+                var particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+                
+                var angle = (Math.PI * 2 * i) / 12;
+                var distance = 80 + Math.random() * 60;
+                var offsetX = Math.cos(angle) * distance;
+                var offsetY = Math.sin(angle) * distance;
+                
+                particle.style.left = (window.innerWidth / 2 + offsetX) + 'px';
+                particle.style.top = (window.innerHeight / 2 + offsetY) + 'px';
+                particle.style.color = cores[Math.floor(Math.random() * cores.length)];
+                particle.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
+                particle.style.setProperty('--rotate', Math.random() * 360 + 'deg');
+                particle.style.animationDelay = (Math.random() * 0.3) + 's';
+                
+                particles.appendChild(particle);
+                
+                setTimeout(function(p) {
+                    return function() { p.remove(); };
+                }(particle), 3000);
+            }
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const button = document.getElementById('musicButton');
+            
+            if (musicPlaying) {
+                music.pause();
+                button.classList.remove('playing');
+                musicPlaying = false;
+            } else {
+                music.play();
+                button.classList.add('playing');
+                musicPlaying = true;
+            }
+            
+            vibrar(20);
+        }
+
+        function relerCarta() {
+            vibrar(40);
+            
+            const letterWrapper = document.getElementById('letterWrapper');
+            const envelopeWrapper = document.getElementById('envelopeWrapper');
+            const envelope = document.getElementById('envelope');
+            const music = document.getElementById('backgroundMusic');
+            
+            // Reset music
+            music.pause();
+            music.currentTime = 0;
+            musicPlaying = false;
+            document.getElementById('musicButton').classList.remove('playing', 'show');
+            document.getElementById('rereadButton').classList.remove('show');
+            
+            // Hide letter
+            letterWrapper.style.display = 'none';
+            
+            // Reset envelope
+            envelope.classList.remove('opened');
+            
+            // Reset typewriter
+            isTyping = false;
+            document.querySelectorAll('.typewriter').forEach(el => {
+                el.textContent = el.getAttribute('data-text');
+            });
+            
+            // Show envelope again
+            envelopeWrapper.style.display = 'block';
+            
+            criarParticulas();
+        }
+    </script>
+</body>
+</html>
