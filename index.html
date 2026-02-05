@@ -127,6 +127,9 @@
             cursor: pointer;
             animation: float 6s ease-in-out infinite;
             transition: all 0.4s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
         .envelope:hover {
@@ -498,7 +501,12 @@
     </div>
 
     <script>
+        let jaAbriu = false;
+
         function abrirEnvelope() {
+            if (jaAbriu) return;
+            jaAbriu = true;
+            
             const envelope = document.getElementById('envelope');
             const envelopeWrapper = document.getElementById('envelopeWrapper');
             const letterWrapper = document.getElementById('letterWrapper');
@@ -552,7 +560,17 @@
             }
         }
 
-        document.getElementById('envelope').onclick = abrirEnvelope;
+        const envelope = document.getElementById('envelope');
+        
+        envelope.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            abrirEnvelope();
+        }, { passive: false });
+        
+        envelope.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirEnvelope();
+        });
     </script>
 </body>
-    </html>
+</html>
